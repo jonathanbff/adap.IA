@@ -23,7 +23,7 @@ Adap.AI is an adaptive educational microservice API built with FastAPI. It provi
 
 ## Overview
 
-Adap.AI offers a suite of adaptive educational tools, helping users engage in structured, interactive learning. This API leverages Groq's language models to deliver intelligent responses and customized educational resources.
+Adap.AI offers a suite of adaptive educational tools, helping users engage in structured, interactive learning. This API now leverages OpenAI's ChatGPT models to deliver intelligent responses and customized educational resources.
 
 ## Installation
 
@@ -50,10 +50,10 @@ To install and run this API:
 
 ## Environment Setup
 
-Ensure you set up the `GROQ_API_KEY` environment variable in a `.env` file:
+Ensure you set up the `OPENAI_API_KEY` environment variable in a `.env` file:
 
 ```plaintext
-GROQ_API_KEY=your_groq_api_key_here
+OPENAI_API_KEY=your_openai_api_key_here
 ```
 
 ## Available Endpoints

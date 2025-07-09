@@ -1,6 +1,6 @@
 ### Documentation for `Adap.AI` API -- back-end
 
-This API offers adaptive educational tools and resources, including word search generation, mind map creation, flashcard creation, and interactive assistant messaging. It’s built with FastAPI, integrated with the Groq API for AI-powered responses.
+This API offers adaptive educational tools and resources, including word search generation, mind map creation, flashcard creation, and interactive assistant messaging. It’s built with FastAPI and now integrates the OpenAI API for AI-powered responses.
 
 ---
 
@@ -13,7 +13,7 @@ This API offers adaptive educational tools and resources, including word search 
 Generates a word search puzzle with words related to a provided topic.
 
 - **Methods**:
-  - `create_agent`: Initializes a Groq API agent to create responses based on initial messages.
+  - `create_agent`: Initializes an OpenAI client to create responses based on initial messages.
   - `get_words_from_agent`: Fetches 10 words related to a specified topic.
   - `place_word_in_grid`: Randomly places words in a 10x10 grid.
   - `generate_word_search`: Generates the puzzle and populates the grid with random letters.
@@ -23,7 +23,7 @@ Generates a word search puzzle with words related to a provided topic.
 Generates a mind map structure for a given subject.
 
 - **Methods**:
-  - `create_agent`: Initializes a Groq API agent with a role to facilitate structured responses.
+  - `create_agent`: Initializes an OpenAI client with a role to facilitate structured responses.
   - `generate_mind_map`: Generates a JSON-format mind map for a given subject.
 
 #### **3. FlashcardGenerator**
@@ -31,7 +31,7 @@ Generates a mind map structure for a given subject.
 Creates custom flashcards on a specified topic.
 
 - **Methods**:
-  - `create_agent`: Generates structured flashcard responses through a Groq agent.
+  - `create_agent`: Generates structured flashcard responses through an OpenAI client.
   - `create_flashcards`: Produces flashcards with key fields in JSON.
 
 #### **4. EducationalAssistant**

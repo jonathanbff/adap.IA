@@ -1,17 +1,17 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Dict, Union, Optional, Any, TypedDict, Literal
-from groq import Groq
+from openai import OpenAI, OpenAIError
 import random
 import json
 import os
 import re
 from dotenv import load_dotenv
-from groq.types.chat import (
+from openai.types.chat import (
     ChatCompletionMessageParam,
     ChatCompletionSystemMessageParam,
     ChatCompletionUserMessageParam,
-    ChatCompletionAssistantMessageParam
+    ChatCompletionAssistantMessageParam,
 )
 
 load_dotenv()
@@ -30,11 +30,11 @@ app = FastAPI(
 
 class WordSearchGenerator:
     def __init__(self, api_key):
-        self.client = Groq(api_key=api_key)
+        self.client = OpenAI(api_key=api_key)
 
     def create_agent(self, role_name, initial_message):
         completion = self.client.chat.completions.create(
-            model="llama3-8b-8192",
+            model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": initial_message}],
             temperature=0.5,
             max_tokens=512,
@@ -111,13 +111,13 @@ class MindMapGenerator:
         Inicializa a instância da classe MindMapGenerator.
 
         Parâmetros:
-            api_key (str): A chave de API para autenticação no Grog.
+            api_key (str): A chave de API para autenticação no OpenAI.
         """
-        self.client = Groq(api_key=api_key)
+        self.client = OpenAI(api_key=api_key)
 
     def create_agent(self, role_name: str, initial_message: str) -> str:
         """
-        Cria um agente no Grog e obtém a resposta completa para uma mensagem inicial.
+        Cria um agente no OpenAI e obtém a resposta completa para uma mensagem inicial.
 
         Parâmetros:
             role_name (str): O nome do papel do agente para o contexto da mensagem.
@@ -127,7 +127,7 @@ class MindMapGenerator:
             str: A resposta completa do agente em formato de string.
         """
         completion = self.client.chat.completions.create(
-            model="llama3-8b-8192",
+            model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": initial_message}],
             temperature=0.5,
             max_tokens=1512,
@@ -186,11 +186,11 @@ class MindMapGenerator:
 class FlashcardGenerator:
     """
     Classe para gerar flashcards personalizados para um assunto fornecido,
-    utilizando a API do Grog para obter os dados dos flashcards.
+    utilizando a API do OpenAI para obter os dados dos flashcards.
     """
 
     def __init__(self, api_key: str):
-        self.client = Groq(api_key=api_key)
+        self.client = OpenAI(api_key=api_key)
 
     def clean_response(self, response: str) -> str:
         """
@@ -207,7 +207,7 @@ class FlashcardGenerator:
 
     def create_agent(self, role_name: str, initial_message: str) -> str:
         """
-        Cria um agente no Grog e obtém a resposta completa para uma mensagem inicial.
+        Cria um agente no OpenAI e obtém a resposta completa para uma mensagem inicial.
 
         Parâmetros:
             role_name (str): O nome do papel do agente para o contexto da mensagem.
@@ -217,7 +217,7 @@ class FlashcardGenerator:
             str: A resposta completa do agente em formato de string.
         """
         completion = self.client.chat.completions.create(
-            model="llama3-8b-8192",
+            model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": initial_message}],
             temperature=0.5,
             max_tokens=2000,
@@ -291,19 +291,19 @@ class FlashcardRequest(BaseModel):
 
 class EducationalAssistant:
     """
-    Classe para criar uma interação de assistente educacional com a API Groq.
+    Classe para criar uma interação de assistente educacional com a API OpenAI.
     Permite ao usuário enviar mensagens em texto e receber respostas interativas.
     """
 
-    def __init__(self, api_key: str, model: str = "llama3-8b-8192"):
+    def __init__(self, api_key: str, model: str = "gpt-3.5-turbo"):
         """
         Inicializa a instância da classe EducationalAssistant.
         
         Parâmetros:
-            api_key (str): Chave de API para autenticação no Groq.
-            model (str): O modelo usado para gerar respostas (padrão: llama3-8b-8192).
+            api_key (str): Chave de API para autenticação no OpenAI.
+            model (str): O modelo usado para gerar respostas (padrão: gpt-3.5-turbo).
         """
-        self.client = Groq(api_key=api_key)
+        self.client = OpenAI(api_key=api_key)
         self.model = model
         self.conversation_history: List[ChatMessage] = []
         
@@ -418,10 +418,10 @@ Remember: Your primary goal is to facilitate learning and understanding in the u
         system_message = self.conversation_history[0]  # Save system message
         self.conversation_history = [system_message]  # Reset history but keep system message
 
-# Configuração da chave da API do Groq
-API_KEY = os.environ.get("GROQ_API_KEY")
+# Configuração da chave da API do OpenAI
+API_KEY = os.environ.get("OPENAI_API_KEY")
 if not API_KEY:
-    raise ValueError("GROQ_API_KEY environment variable is not set")
+    raise ValueError("OPENAI_API_KEY environment variable is not set")
 
 word_search_generator = WordSearchGenerator(api_key=API_KEY)
 mind_map_generator = MindMapGenerator(api_key=API_KEY)
